@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Updating Repository Index and Performing Distribution Updates
+    apt:
+      update_cache: true
+      upgrade: "dist"
+    when: ansible_os_family == "Debian"
+
+  - name: Gathering Information
+    block:
+      - name: Listing Upgraded Packages
+        shell: cat /var/log/apt/history.log | grep 'Upgrade:'
+        register: upgraded_packages
+        when: ansible_os_family == "Debian"
+
+      - name: Checking Reboot Required
+        stat:
+          path: /var/run/reboot-required
+        register: reboot_required
+        when: ansible_os_family == "Debian"
+
+    always:
+      - name: Displaying Upgraded Packages
+        debug:
+          msg: "{{ upgraded_packages.stdout }}"
+        when: ansible_os_family == "Debian"
+
+      - name: Display Reboot Required Status
+        debug:
+          msg: "Reboot is required"
+        when: reboot_required.stat.exists and ansible_os_family == "Debian"
