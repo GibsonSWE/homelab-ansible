@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Updating Repository Index
+    apt:
+      update_cache: true
+    
+    when: ansible_os_family == "Debian"
+
+  - name: Checking For Updates
+    shell: apt list --upgradable
+    register: updates_available
+    when: ansible_os_family == "Debian"
+
+  - name: Updates Available
+    debug:
+      msg: "{{ updates_available.stdout_lines }}"
+    when: ansible_os_family == "Debian"
