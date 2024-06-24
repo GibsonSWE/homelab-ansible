@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  vars:
+    ansbible_ssh_private_key_file: ~/.ssh/homelab_key
+  pre_tasks:
+  - name: Installing Updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_os_family == "Debian"
+
+- hosts: all
+  become: true
+  vars:
+    ansbible_ssh_private_key_file: ~/.ssh/homelab_key
+  tasks:
+  - name: Creating User ansible
+    user:
+      name: ansible
+      groups: root
+
+  - name: Adding SSH key for ansible
+    authorized_key:
+      user: ansible
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWnai7R353kpNk6oujSBB3Cmm5cVCF3/6sMRnaVantK ansible"
+
+  - name: Adding sudoers file for ansible user
+    copy:
+      src: sudoer_ansible
+      dest: /etc/sudoers.d/ansible
+      owner: root
+      group: root
+      mode: 0440

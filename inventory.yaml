@@ -3,29 +3,29 @@
 all:
   vars:
     ansible_user: ansible
-    ansible_ssh_private_key_file: "~/.ssh/homelab_key"
+    ansible_ssh_private_key_file: "~/.ssh/ansible_key"
 
   children:
     servers:
       hosts:
         ns1:
           ansible_host: ns1.gibnet.se
-          ansible_user: admin
+          #ansible_user: admin
         proxy:
           ansible_host: proxy.gibnet.se
-          ansible_user: admin
+          #ansible_user: admin
         logging:
           ansible_host: logging.gibnet.se
-          ansible_user: admin
+          #ansible_user: admin
         netprobe:
           ansible_host: netprobe.gibnet.se
-          ansible_user: gibson
+          #ansible_user: gibson
         netbox:
           ansible_host: netbox.gibnet.se
-          ansible_user: gibson
+          #ansible_user: gibson
         proxmox:
           ansible_host: proxmox.gibnet.se
-          ansible_user: admin
+          #ansible_user: admin
     desktops:
       hosts:
         #pop_os (this machine):
@@ -33,4 +33,4 @@ all:
           #ansible_user: gibson
         kali:
           ansible_host: 10.0.0.13
-          ansible_user: gibson
+          #ansible_user: gibson
