@@ -15,6 +15,7 @@
       - name: Listing Upgraded Packages
         shell: cat /var/log/apt/history.log | grep 'Upgrade:'
         register: upgraded_packages
+        changed_when: false
         when: ansible_os_family == "Debian"
 
       - name: Checking Reboot Required
