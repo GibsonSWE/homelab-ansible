@@ -10,20 +10,28 @@ all:
     servers:
       hosts:
         ns1:
-          ansible_host: ns1.gibnet.se
+          ansible_host: ns1-mgmt.gibnet.se
           #ansible_user: admin
         proxy:
-          ansible_host: proxy.gibnet.se
+          ansible_host: proxy-mgmt.gibnet.se
           #ansible_user: admin
         logging:
-          ansible_host: logging.gibnet.se
+          ansible_host: logging-mgmt.gibnet.se
           #ansible_user: admin
         netprobe:
-          ansible_host: netprobe.gibnet.se
+          ansible_host: netprobe-mgmt.gibnet.se
           #ansible_user: gibson
         netbox:
-          ansible_host: netbox.gibnet.se
+          ansible_host: netbox-mgmt.gibnet.se
           #ansible_user: gibson
+        grafana:
+          ansible_host: grafana-mgmt.gibnet.se
+          #ansible_user: gibson
+        #cml:
+        #  ansible_host: cml.gibnet.se
+        #  ansible_user: admin
+        #  ansible_ssh_private_key_file: "~/.ssh/homelab_key"
+        #  ansible_port: 1122
         proxmox:
           ansible_host: proxmox.gibnet.se
           #ansible_user: admin
@@ -33,5 +41,5 @@ all:
           #ansible_host: 10.0.0.12
           #ansible_user: gibson
         kali:
-          ansible_host: 10.0.0.13
+          ansible_host: kali.gibnet.se
           #ansible_user: gibson
