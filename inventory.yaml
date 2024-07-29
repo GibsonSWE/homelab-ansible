@@ -27,6 +27,9 @@ all:
         grafana:
           ansible_host: grafana-mgmt.gibnet.se
           #ansible_user: gibson
+        www:
+          ansible_host: www-mgmt.gibnet.se
+          #ansible_user: gibson
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
