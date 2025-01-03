@@ -23,6 +23,10 @@ all:
           ansible_host: grafana-mgmt.gibnet.se
         www:
           ansible_host: www-mgmt.gibnet.se
+        stash:
+          ansible_host: stash-mgmt.gibnet.se
+        vpn:
+          ansible_host: vpn-mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
@@ -34,5 +38,5 @@ all:
       hosts:
         #pop_os (this machine):
           #ansible_host: pop.gibnet.se
-        kali:
-          ansible_host: kali.gibnet.se
+        #kali:
+          #ansible_host: kali.gibnet.se
