@@ -1,7 +1,7 @@
 ---
 
 - name: Bootstrap Playbook Pre Tasks
-  hosts: kali, ns1
+  hosts: it-tools
   become: true
   vars:
     ansible_ssh_private_key_file: /home/gibson/.ssh/homelab_key
@@ -9,12 +9,12 @@
   pre_tasks:
     - name: Installing Updates
       ansible.builtin.apt:
-        upgrade: dist
+        upgrade: safe
         update_cache: true
       when: ansible_os_family == "Debian"
 
 - name: Bootstrap Playbook Main Tasks
-  hosts: kali
+  hosts: it-tools
   become: true
   vars:
     ansible_ssh_private_key_file: ~/.ssh/homelab_key

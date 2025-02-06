@@ -4,10 +4,10 @@
   become: true
   tasks:
 
-  - name: Updating Repository Index and Performing Distribution Updates
+  - name: Updating Repository Index and Performing Apt Upgrade
     apt:
       update_cache: true
-      upgrade: "dist"
+      upgrade: "safe"
     when: ansible_os_family == "Debian"
 
   - name: Gathering Information

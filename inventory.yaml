@@ -27,6 +27,14 @@ all:
           ansible_host: stash-mgmt.gibnet.se
         vpn:
           ansible_host: vpn-mgmt.gibnet.se
+        it-tools:
+          ansible_host: it-tools-mgmt.gibnet.se
+        gotify:
+          ansible_host: gotify-mgmt.gibnet.se
+        rustdesk:
+          ansible_host: rdp-mgmt.gibnet.se
+        monitor:
+          ansible_host: monitor-mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
