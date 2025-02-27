@@ -35,6 +35,8 @@ all:
           ansible_host: rdp-mgmt.gibnet.se
         monitor:
           ansible_host: monitor-mgmt.gibnet.se
+        kasm:
+          ansible_host: kasm-mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
