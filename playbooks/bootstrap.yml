@@ -1,7 +1,10 @@
 ---
 
+# Run with:
+# ansible-playbook --ask-become-pass --extra-vars "target_hosts=<host(s)>" playbooks/bootstrap.yml
+
 - name: Bootstrap Playbook Pre Tasks
-  hosts: it-tools
+  hosts: "{{ target_hosts }}"
   become: true
   vars:
     ansible_ssh_private_key_file: /home/gibson/.ssh/homelab_key
@@ -14,7 +17,7 @@
       when: ansible_os_family == "Debian"
 
 - name: Bootstrap Playbook Main Tasks
-  hosts: it-tools
+  hosts: "{{ target_hosts }}"
   become: true
   vars:
     ansible_ssh_private_key_file: ~/.ssh/homelab_key
@@ -28,7 +31,7 @@
     - name: Adding SSH key for ansible
       ansible.posix.authorized_key:
         user: ansible
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWnai7R353kpNk6oujSBB3Cmm5cVCF3/6sMRnaVantK ansible"
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWnai7R353kpNk6oujSBB3Cmm5cVCF3/6sMRnaVantK ansible"   # Public key for ansible user
 
     - name: Adding sudoers file for ansible user
       ansible.builtin.copy:
@@ -37,3 +40,18 @@
         owner: root
         group: root
         mode: 0440
+
+    - name: Configure rsyslog to send logs to remote server
+      ansible.builtin.lineinfile:
+        path: /etc/rsyslog.conf
+        line: "*.* @logging-mgmt.gibnet.se:1515"
+        insertbefore: "#################"
+        firstmatch: true
+        state: present
+      notify: Restart rsyslog
+
+  handlers:
+    - name: Restart rsyslog
+      service:
+        name: rsyslog
+        state: restarted
