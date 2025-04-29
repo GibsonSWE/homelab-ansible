@@ -29,14 +29,16 @@ all:
           ansible_host: vpn-mgmt.gibnet.se
         it-tools:
           ansible_host: it-tools-mgmt.gibnet.se
-        gotify:
-          ansible_host: gotify-mgmt.gibnet.se
+        uptime:
+          ansible_host: uptime-mgmt.gibnet.se
         rustdesk:
           ansible_host: rdp-mgmt.gibnet.se
         monitor:
           ansible_host: monitor-mgmt.gibnet.se
         kasm:
           ansible_host: kasm-mgmt.gibnet.se
+        portainer:
+          ansible_host: portainer.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
