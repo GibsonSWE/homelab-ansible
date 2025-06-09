@@ -15,8 +15,6 @@ all:
           ansible_host: proxy-mgmt.gibnet.se
         logging:
           ansible_host: logging-mgmt.gibnet.se
-        netprobe:
-          ansible_host: netprobe-mgmt.gibnet.se
         netbox:
           ansible_host: netbox-mgmt.gibnet.se
         grafana:
@@ -27,8 +25,8 @@ all:
           ansible_host: stash-mgmt.gibnet.se
         vpn:
           ansible_host: vpn-mgmt.gibnet.se
-        it-tools:
-          ansible_host: it-tools-mgmt.gibnet.se
+        immich:
+          ansible_host: immich-mgmt.gibnet.se
         uptime:
           ansible_host: uptime-mgmt.gibnet.se
         rustdesk:
@@ -38,7 +36,9 @@ all:
         kasm:
           ansible_host: kasm-mgmt.gibnet.se
         portainer:
-          ansible_host: portainer.gibnet.se
+          ansible_host: portainer-mgmt.gibnet.se
+        wazuh:
+          ansible_host: wazuh-mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
