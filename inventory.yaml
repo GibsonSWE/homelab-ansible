@@ -25,6 +25,8 @@ all:
           ansible_host: stash-mgmt.gibnet.se
         vpn:
           ansible_host: vpn-mgmt.gibnet.se
+        guacamole:
+          ansible_host: remote-mgmt.gibnet.se
         immich:
           ansible_host: immich-mgmt.gibnet.se
         uptime:
@@ -39,6 +41,8 @@ all:
           ansible_host: portainer-mgmt.gibnet.se
         wazuh:
           ansible_host: wazuh-mgmt.gibnet.se
+        minecraft:
+          ansible_host: minecraft-mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
