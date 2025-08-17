@@ -9,47 +9,51 @@ all:
   children:
     servers:
       hosts:
-        ns1:
-          ansible_host: ns1-mgmt.gibnet.se
-        proxy:
-          ansible_host: proxy-mgmt.gibnet.se
-        logging:
-          ansible_host: logging-mgmt.gibnet.se
+        ns-01:
+          ansible_host: ns-01.mgmt.gibnet.se
+        ext-proxy-01:
+          ansible_host: ext-proxy-01.mgmt.gibnet.se
+        int-proxy-01:
+          ansible_host: int-proxy-01.mgmt.gibnet.se
+        graylog:
+          ansible_host: graylog.mgmt.gibnet.se
         netbox:
-          ansible_host: netbox-mgmt.gibnet.se
+          ansible_host: netbox.mgmt.gibnet.se
         grafana:
-          ansible_host: grafana-mgmt.gibnet.se
+          ansible_host: grafana.mgmt.gibnet.se
         www:
-          ansible_host: www-mgmt.gibnet.se
-        stash:
-          ansible_host: stash-mgmt.gibnet.se
+          ansible_host: www.mgmt.gibnet.se
+        media-01:
+          ansible_host: media-01.mgmt.gibnet.se
         vpn:
-          ansible_host: vpn-mgmt.gibnet.se
+          ansible_host: vpn.mgmt.gibnet.se
         guacamole:
-          ansible_host: remote-mgmt.gibnet.se
+          ansible_host: remote.mgmt.gibnet.se
         immich:
-          ansible_host: immich-mgmt.gibnet.se
-        uptime:
-          ansible_host: uptime-mgmt.gibnet.se
+          ansible_host: immich.mgmt.gibnet.se
+        uptime-kuma:
+          ansible_host: uptime.mgmt.gibnet.se
         rustdesk:
-          ansible_host: rdp-mgmt.gibnet.se
-        monitor:
-          ansible_host: monitor-mgmt.gibnet.se
+          ansible_host: rdp.mgmt.gibnet.se
+        checkmk:
+          ansible_host: checkmk.mgmt.gibnet.se
         kasm:
-          ansible_host: kasm-mgmt.gibnet.se
+          ansible_host: kasm.mgmt.gibnet.se
         portainer:
-          ansible_host: portainer-mgmt.gibnet.se
+          ansible_host: portainer.mgmt.gibnet.se
         wazuh:
-          ansible_host: wazuh-mgmt.gibnet.se
+          ansible_host: wazuh.mgmt.gibnet.se
         minecraft:
-          ansible_host: minecraft-mgmt.gibnet.se
+          ansible_host: minecraft.mgmt.gibnet.se
+        n8n:
+          ansible_host: n8n.mgmt.gibnet.se
         #cml:
         #  ansible_host: cml.gibnet.se
         #  ansible_user: admin
         #  ansible_ssh_private_key_file: "~/.ssh/homelab_key"
         #  ansible_port: 1122
-        proxmox:
-          ansible_host: proxmox-mgmt.gibnet.se
+        pve:
+          ansible_host: pve.mgmt.gibnet.se
     desktops:
       hosts:
         #pop_os (this machine):
