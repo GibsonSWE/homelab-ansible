@@ -40,18 +40,3 @@
         owner: root
         group: root
         mode: 0440
-
-    - name: Configure rsyslog to send logs to remote server
-      ansible.builtin.lineinfile:
-        path: /etc/rsyslog.conf
-        line: "*.* @logging-mgmt.gibnet.se:1515"
-        insertbefore: "#################"
-        firstmatch: true
-        state: present
-      notify: Restart rsyslog
-
-  handlers:
-    - name: Restart rsyslog
-      service:
-        name: rsyslog
-        state: restarted
