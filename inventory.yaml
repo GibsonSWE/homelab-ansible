@@ -15,12 +15,14 @@ all:
           ansible_host: ext-proxy-01.mgmt.gibnet.se
         int-proxy-01:
           ansible_host: int-proxy-01.mgmt.gibnet.se
-        graylog:
-          ansible_host: graylog.mgmt.gibnet.se
+        elastic:
+          ansible_host: elastic.mgmt.gibnet.se
         netbox:
           ansible_host: netbox.mgmt.gibnet.se
         grafana:
           ansible_host: grafana.mgmt.gibnet.se
+        obsdb:
+          ansible_host: obsdb.mgmt.gibnet.se
         www:
           ansible_host: www.mgmt.gibnet.se
         media-01:
@@ -29,20 +31,20 @@ all:
           ansible_host: vpn.mgmt.gibnet.se
         guacamole:
           ansible_host: remote.mgmt.gibnet.se
-        immich:
-          ansible_host: immich.mgmt.gibnet.se
         uptime-kuma:
           ansible_host: uptime.mgmt.gibnet.se
+        paperless-ngx:
+          ansible_host: docs.mgmt.gibnet.se
         rustdesk:
           ansible_host: rdp.mgmt.gibnet.se
         checkmk:
           ansible_host: checkmk.mgmt.gibnet.se
         kasm:
           ansible_host: kasm.mgmt.gibnet.se
-        portainer:
-          ansible_host: portainer.mgmt.gibnet.se
-        wazuh:
-          ansible_host: wazuh.mgmt.gibnet.se
+        docker:
+          ansible_host: docker.mgmt.gibnet.se
+        #wazuh:
+          #ansible_host: wazuh.mgmt.gibnet.se
         minecraft:
           ansible_host: minecraft.mgmt.gibnet.se
         n8n:
@@ -54,6 +56,8 @@ all:
         #  ansible_port: 1122
         pve:
           ansible_host: pve.mgmt.gibnet.se
+        pbs:
+          ansible_host: pbs.mgmt.gibnet.se
     desktops:
       hosts:
         #pop_os (this machine):
