@@ -3,19 +3,63 @@
 - hosts: all
   become: true
   tasks:
+  - name: Check for updates on Debian family
+    block:
+      - name: Update APT cache
+        apt:
+          update_cache: true
+        tags: [updates]
 
-  - name: Updating Repository Index
-    apt:
-      update_cache: true
-    
+      - name: List upgradable APT packages
+        shell: apt list --upgradable
+        register: updates_available_debian
+        changed_when: false
+        failed_when: false
+        tags: [updates]
+
+      - name: List packages on hold
+        shell: apt-mark showhold || true
+        register: apt_hold_packages
+        changed_when: false
+        failed_when: false
+        tags: [updates]
+
+      - name: Show Debian updates (if any)
+        debug:
+          msg:
+            - "Available updates: {{ updates_available_debian.stdout_lines | default([]) }}"
+            - "Held packages: {{ apt_hold_packages.stdout_lines | default([]) }}"
+        tags: [updates]
     when: ansible_os_family == "Debian"
 
-  - name: Checking For Updates
-    shell: apt list --upgradable
-    register: updates_available
-    when: ansible_os_family == "Debian"
+  - name: Check for updates on RedHat family
+    block:
+      - name: Refresh DNF/YUM cache
+        shell: |
+          if command -v dnf >/dev/null 2>&1; then
+            dnf makecache --refresh
+          else
+            yum makecache fast
+          fi
+        changed_when: false
+        failed_when: false
+        tags: [updates]
 
-  - name: Updates Available
-    debug:
-      msg: "{{ updates_available.stdout_lines }}"
-    when: ansible_os_family == "Debian"
+      - name: Check available updates (dnf/yum)
+        shell: |
+          if command -v dnf >/dev/null 2>&1; then
+            dnf check-update
+          else
+            yum check-update
+          fi
+        register: updates_available_redhat
+        changed_when: false
+        # dnf returns 100 when updates are available; treat that as non-fatal
+        failed_when: updates_available_redhat.rc not in [0,100]
+        tags: [updates]
+
+      - name: Show RedHat updates (if any)
+        debug:
+          msg: "{{ updates_available_redhat.stdout_lines | default([]) }}"
+        tags: [updates]
+    when: ansible_os_family == "RedHat"

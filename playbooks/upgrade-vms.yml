@@ -2,35 +2,119 @@
 
 - hosts: all
   become: true
+  vars_prompt:
+    - name: "apply_updates"
+      prompt: "Apply updates on target host? (yes/no)"
+      private: false
+      default: "no"
   tasks:
-
-  - name: Updating Repository Index and Performing Apt Upgrade
-    apt:
-      update_cache: true
-      upgrade: "safe"
-    when: ansible_os_family == "Debian"
-
-  - name: Gathering Information
+  - name: Show apply_updates setting
+    debug:
+      msg: "apply_updates={{ apply_updates }}"
+    tags: [upgrade]
+  - name: Upgrade and report on Debian family
     block:
-      - name: Listing Upgraded Packages
-        shell: cat /var/log/apt/history.log | grep 'Upgrade:'
+      - name: Update APT cache
+        apt:
+          update_cache: true
+        tags: [upgrade]
+
+      - name: Perform safe APT upgrade
+        apt:
+          upgrade: "safe"
+        register: apt_upgrade_result
+        when: apply_updates | bool
+        tags: [upgrade]
+
+      - name: List upgraded packages from APT history
+        shell: grep -E "^Upgrade:" /var/log/apt/history.log || true
         register: upgraded_packages
         changed_when: false
-        when: ansible_os_family == "Debian"
+        failed_when: false
+        tags: [upgrade]
 
-      - name: Checking Reboot Required
+      - name: List packages on hold
+        shell: apt-mark showhold || true
+        register: apt_hold_packages
+        changed_when: false
+        failed_when: false
+        tags: [upgrade]
+
+      - name: Check reboot-required file
         stat:
           path: /var/run/reboot-required
         register: reboot_required
-        when: ansible_os_family == "Debian"
+        tags: [upgrade]
 
-    always:
-      - name: Displaying Upgraded Packages
+      - name: Debian upgrade summary
         debug:
-          msg: "{{ upgraded_packages.stdout }}"
-        when: ansible_os_family == "Debian"
+          msg:
+            - "APT upgrade changed: {{ apt_upgrade_result.changed | default(false) }}"
+            - "Upgraded packages: {{ upgraded_packages.stdout_lines | default([]) }}"
+            - "Reboot required: {{ reboot_required.stat.exists | default(false) }}"
+            - "Held packages: {{ apt_hold_packages.stdout_lines | default([]) }}"
+        tags: [upgrade]
+    when: ansible_os_family == "Debian"
 
-      - name: Display Reboot Required Status
+  - name: Upgrade and report on RedHat family
+    block:
+      - name: Refresh DNF/YUM cache
+        shell: |
+          if command -v dnf >/dev/null 2>&1; then
+            dnf makecache --refresh
+          else
+            yum makecache fast
+          fi
+        changed_when: false
+        failed_when: false
+        tags: [upgrade]
+
+      - name: Perform DNF/YUM upgrade
+        shell: |
+          if command -v dnf >/dev/null 2>&1; then
+            dnf -y upgrade
+          else
+            yum -y update
+          fi
+        register: redhat_upgrade_result
+        failed_when: false
+        when: apply_updates | bool
+        tags: [upgrade]
+
+      - name: Show RedHat upgrade output
         debug:
-          msg: "Reboot is required"
-        when: reboot_required.stat.exists and ansible_os_family == "Debian"
+          msg: "{{ redhat_upgrade_result.stdout_lines | default([]) }}"
+        tags: [upgrade]
+
+      - name: Recent package history (dnf/yum)
+        shell: |
+          if command -v dnf >/dev/null 2>&1; then
+            dnf history | head -n 10
+          else
+            yum history | head -n 10
+          fi
+        register: package_history
+        changed_when: false
+        failed_when: false
+        tags: [upgrade]
+
+      - name: Check reboot-required on RedHat
+        shell: |
+          if command -v needs-restarting >/dev/null 2>&1; then
+            needs-restarting -r >/dev/null 2>&1 && echo 1 || echo 0
+          else
+            [ -f /var/run/reboot-required ] && echo 1 || echo 0
+          fi
+        register: reboot_check_redhat
+        changed_when: false
+        failed_when: false
+        tags: [upgrade]
+
+      - name: RedHat upgrade summary
+        debug:
+          msg:
+            - "RedHat upgrade changed: {{ redhat_upgrade_result.changed | default(false) }}"
+            - "Recent package history: {{ package_history.stdout_lines | default([]) }}"
+            - "Reboot required: {{ (reboot_check_redhat.stdout | int) == 1 }}"
+        tags: [upgrade]
+    when: ansible_os_family == "RedHat"
